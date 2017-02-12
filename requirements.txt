@@ -1,0 +1,4 @@
+click
+reportlab
+sqlalchemy
+psycopg2
