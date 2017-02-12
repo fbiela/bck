@@ -24,7 +24,7 @@ def _Loc(loc = True):
         return full_path
 
 # config
-config = ConfigParser() 
+config = ConfigParser()
 config.read(_Loc() + '/bck.cfg')
 db = create_engine(config.get("DATABASE", "SQLALCHEMY_DATABASE_URI"))
 config.get("DATABASE", "SQLALCHEMY_TRACK_MODIFICATIONS")
@@ -45,15 +45,17 @@ class Backup(Base):
     id = Column('id', Integer, primary_key = True)
     date = Column('date', DateTime, default = datetime.now)
     name = Column('name', Text)
+    path = Column('path', Text)
     md5 = Column('md5', Text)
 
-    def __init__(self, id = '', date = datetime.now, name = '', md5 = ''):
+    def __init__(self, id = '', date = datetime.now, name = '', path = '', md5 = ''):
         """Constructor."""
         self.id = id
         self.date = date
         self.name = name
+        self.path = path
         self.md5 = md5
 
     def __repr__(self):
         """Dummy."""
-        return self.name
+        return self.__tablename__
