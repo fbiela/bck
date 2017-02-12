@@ -43,12 +43,12 @@ class Backup(Base):
 
     __tablename__ = 'backup'
     id = Column('id', Integer, primary_key = True)
-    date = Column('date', DateTime, default = datetime.now)
+    date = Column('date', DateTime, default='sCURRENT_TIMESTAMP')
     name = Column('name', Text)
     path = Column('path', Text)
     md5 = Column('md5', Text)
 
-    def __init__(self, id = '', date = datetime.now, name = '', path = '', md5 = ''):
+    def __init__(self, id = '', date = '', name = '', path = '', md5 = ''):
         """Constructor."""
         self.id = id
         self.date = date

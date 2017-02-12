@@ -44,8 +44,8 @@ def cli(n, l):
         check = hashlib.md5(md).hexdigest()
 
         # sql
-        SQL = [_now, _bck, l, check]
-        db.execute("INSERT INTO backup(date, name, path, md5) VALUES(?, ?, ?, ?)", SQL)
+        SQL = [_bck, l, check]
+        db.execute("INSERT INTO backup(name, path, md5) VALUES(?, ?, ?)", SQL)
 
         click.echo('backup ends successfully.')
     else:
