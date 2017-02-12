@@ -1,17 +1,19 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+#-*- coding: utf-8 -*- 
 #
+
+import hashlib
+import os
+import sqlite3
+from datetime import date, datetime, time
 
 # import
 import click
-import os
-from datetime import datetime, time, date
-import sqlite3
-import hashlib
+
 
 @click.command()
 
-# opcao -n 
+# opcao -n
 @click.option('-n', default = None, help = 'Para nomear o backup.')
 
 # opcao -l
@@ -34,18 +36,18 @@ def cli(n, l):
     if n != None and l != None:
         backup = n + agora
         cmd = "7z a " + backup + " "  +  l
-        
+
         # faz o backup
         os.system(cmd)
-        
+
         # md5sum apos backup
         soma = "md5sum " + backup
         os.system(soma)
-        
+
         # move bck para pasta de backup
         mpath = "mv " + os.getcwd() + "/" + backup + " $HOME/public/backup"
         os.system(mpath)
-        
+
         # checka md5 para o db
         arquivo = "/home/frederico/public/backup/" + backup
         md = open(arquivo, 'rb').read()
@@ -58,7 +60,7 @@ def cli(n, l):
         click.echo('Backup realizado com sucesso.')
     else:
         click.echo("Erro: faltam argumentos verifique se utilizou: 'bck -n nome -l caminho'")
-    
+
 
 if __name__ == "__main__":
     cli()
