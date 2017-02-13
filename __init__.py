@@ -1,5 +1,7 @@
 """Import."""
 from database import session, Backup, _Loc
+from datetime import  datetime
+from ConfigParser import ConfigParser
 import click
 import os
 import hashlib
@@ -24,6 +26,8 @@ def cli(n, l):
     """
     _date = datetime.now
     _now = _date().strftime("_%d-%m-%Y_%H:%m.7z")
+    config = ConfigParser()
+    config.read(_Loc() + '/bck.cfg')
 
     if n != None and l != None:
         _bck = n + _now
@@ -37,13 +41,14 @@ def cli(n, l):
         # move backup to url
         _bck_path = config.get("BACKUP", "BACKUP_PATH")
         _mv = "mv " + os.getcwd() + "/" + _bck + " " + _bck_path
+        os.system(_mv)
 
         # md5sum to db
         _file = _bck_path + "/" + _bck
         md = open(_file, 'rb').read()
         check = hashlib.md5(md).hexdigest()
 
-        _bck_ = Backup(name = _bck, path= l, md5 = chech)
+        _bck_ = Backup(name = _bck, path= l, md5 = check)
         session.add(_bck_)
         session.commit()
         session.close()
