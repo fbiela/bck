@@ -1,5 +1,5 @@
 """Import."""
-from database import Backup, _Loc, db
+from database import session, Backup, _Loc
 import click
 import os
 import hashlib
@@ -43,9 +43,10 @@ def cli(n, l):
         md = open(_file, 'rb').read()
         check = hashlib.md5(md).hexdigest()
 
-        # sql
-        SQL = [_bck, l, check]
-        db.execute("INSERT INTO backup(name, path, md5) VALUES(?, ?, ?)", SQL)
+        _bck_ = Backup(name = _bck, path= l, md5 = chech)
+        session.add(_bck_)
+        session.commit()
+        session.close()
 
         click.echo('backup ends successfully.')
     else:

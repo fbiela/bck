@@ -7,6 +7,7 @@ from datetime import datetime
 from sqlalchemy import (Column, DateTime, ForeignKey, Integer, MetaData,
                         String, Table, Text, create_engine)
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import func
 
 
@@ -37,18 +38,20 @@ config.get("DATABASE", "SQLALCHEMY_TRACK_MODIFICATIONS")
 #
 mymetadata = MetaData(db)
 Base =  declarative_base(metadata = mymetadata)
+Session = sessionmaker(bind = db)
+session = Session()
 
 class Backup(Base):
     """Create a sqlite table backup."""
 
     __tablename__ = 'backup'
     id = Column('id', Integer, primary_key = True)
-    date = Column('date', DateTime, default='CURRENT_TIMESTAMP')
+    date = Column('date', DateTime, default = 'now()')
     name = Column('name', Text)
     path = Column('path', Text)
     md5 = Column('md5', Text)
 
-    def __init__(self, id = '', date = '', name = '', path = '', md5 = ''):
+    def __init__(self,  id = None, date = 'now()', name = '', path = '', md5 = ''):
         """Constructor."""
         self.id = id
         self.date = date
